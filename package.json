@@ -1,0 +1,43 @@
+{
+  "name": "cli-select-prompt",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "files": [
+    "build"
+  ],
+  "engines": {
+    "node": ">=8.6"
+  },
+  "scripts": {
+    "prebuild": "rimraf build",
+    "build": "tsc",
+    "dev": "ts-node ./examples/basic.ts",
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m-sureshraj/cli-select-prompt.git"
+  },
+  "keywords": ["cli", "select-prompt", "autocomplete"],
+  "author": "Sureshraj <m.s.suresh100@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/m-sureshraj/cli-select-prompt/issues"
+  },
+  "homepage": "https://github.com/m-sureshraj/cli-select-prompt#readme",
+  "dependencies": {
+    "ansi-escapes": "^4.3.1",
+    "is-glob": "^4.0.1",
+    "kleur": "^4.1.3",
+    "micromatch": "^4.0.2",
+    "strip-ansi": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/is-glob": "^4.0.1",
+    "@types/node": "^8.5.0",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  }
+}

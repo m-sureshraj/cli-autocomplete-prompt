@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    // es2016 has 100% support for node v8.6.0
+    "target": "es2016",
+    "module": "commonjs",
+    "outDir": "build",
+
+    // Enable it when the migration (js -> ts) is done.
+    "strict": false,
+
+    "allowJs": true,
+    "checkJs": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+
+  "include": ["src"]
+}

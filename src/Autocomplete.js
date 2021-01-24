@@ -3,14 +3,14 @@ const {
   cursorLeft,
   cursorUp,
   cursorForward,
-  eraseDown,
+  eraseLines,
+  cursorDown
 } = require('ansi-escapes');
 const stripAnsi = require('strip-ansi');
-const { dim, bgYellow, gray } = require('kleur');
-const mm = require('micromatch');
+const { bgYellow, dim } = require('kleur');
 
 const Prompt = require('./Prompt');
-const { getScrollPosition, highlight } = require('./util');
+const { getScrollPosition, getMatchedIndexes, dimUnmatchedStrings } = require('./util');
 
 const identity = item => item;
 
@@ -18,14 +18,15 @@ class Autocomplete extends Prompt {
   constructor(options = {}) {
     super(options);
 
+    // options
     this.list = options.list || [];
     this.limit = options.limit || 10;
-    this.format = typeof options.format === 'function' ? options.format : identity;
+    this.onSubmit = typeof options.onSubmit === 'function' ? options.onSubmit : identity;
+    this.promptLabel = options.promptLabel || 'filter › ';
 
-    this.firstRender = true;
     this.input = '';
+    this.firstRender = true;
     this.cursor = 0;
-    this.message = dim(' filter ›');
     this.focusedItemIndex = null;
     this.filteredList = [];
 
@@ -97,7 +98,7 @@ class Autocomplete extends Prompt {
       return;
     }
 
-    this.emit('submit', matches.map(this.format));
+    this.emit('submit', this.onSubmit(matches));
     this.cleanup();
   }
 
@@ -113,23 +114,36 @@ class Autocomplete extends Prompt {
     }
   }
 
-  renderOption({ label }, isFocused, isStart, isEnd) {
-    const prefix = dim('›');
-    const scrollIndicator = isStart ? ' ↑' : isEnd ? ' ↓' : '';
-    const content = isFocused ? bgYellow().black(label) : highlight(this.input, label);
+  highlight(input = '', label = '') {
+    input = input.trim();
+    if (input.length === 0) return dim(label);
 
-    return ` ${prefix}${scrollIndicator} ${content}`;
+    const matchedIndexes = getMatchedIndexes(label, input);
+    if (matchedIndexes.length === 0) return dim(label);
+
+    return dimUnmatchedStrings(label, matchedIndexes);
+  }
+
+  renderOption({ label }, isFocused, isStart, isEnd) {
+    const scrollIndicator = isStart ? '↑ ' : isEnd ? '↓ ' : '';
+    const content = isFocused ? bgYellow().black(label) : this.highlight(this.input, label);
+
+    return `${scrollIndicator}${content}`;
   }
 
   suggestion(item) {
-    if (this.input === '') return true;
+    return item.label.includes(this.input);
+  }
 
-    return mm.contains(item.label, this.input);
+  formatBody(body) {
+    return `\n${body || 'No matches found'}`;
   }
 
   render() {
     if (!this.firstRender) {
-      this.out.write(eraseDown);
+      // clear the previous output
+      const rows = this.outputText.split('\n').length;
+      this.out.write(cursorDown(rows) + eraseLines(rows + 1));
     }
 
     this.updateFilterList();
@@ -140,7 +154,7 @@ class Autocomplete extends Prompt {
       this.limit
     );
 
-    this.outputText = [this.message, this.input].join(' ');
+    const header = `${this.promptLabel}${this.input}`;
 
     const suggestions = this.filteredList
       .slice(startIndex, endIndex)
@@ -154,18 +168,19 @@ class Autocomplete extends Prompt {
       })
       .join('\n');
 
-    this.outputText += `\n\n${suggestions || ' No matches found'}`;
+    const body = this.formatBody(suggestions);
+    this.outputText = header + body;
 
-    if (this.filteredList.length && this.filteredList.length > this.limit) {
-      this.outputText += `\n\n ${gray(`Matched ${this.filteredList.length} files`)}`;
+    // calculate the cursor x,y position
+    const headerLength = stripAnsi(header).length;
+    let cursorX = cursorLeft;
+    if (headerLength) {
+      cursorX += cursorForward(headerLength);
     }
 
-    // update the cursor position
-    const cursorY = cursorUp(this.outputText.split('\n').length - 1);
-    const cursorX =
-      cursorLeft + cursorForward(stripAnsi(this.message).length + this.input.length + 1);
+    const cursorY = cursorUp(body.split('\n').length - 1);
 
-    this.out.write(eraseLine + cursorLeft + this.outputText + cursorY + cursorX);
+    this.out.write(eraseLine + cursorLeft + this.outputText + cursorX + cursorY);
 
     this.firstRender = false;
   }

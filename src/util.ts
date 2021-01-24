@@ -1,4 +1,3 @@
-import isGlob from 'is-glob';
 import { dim } from 'kleur';
 
 export const enum Action {
@@ -56,23 +55,10 @@ export function getScrollPosition(
   return [startIndex, endIndex];
 }
 
-export function highlight(pattern = '', path = ''): string {
-  pattern = pattern.trim();
-  if (pattern.length === 0) return dim(path);
-
-  // by default, it's a white color text.
-  if (isGlob(pattern)) return path;
-
-  const matchedIndexes = getMatchedIndexes(path, pattern);
-  if (matchedIndexes.length === 0) return dim(path);
-
-  return dimUnmatchedStrings(path, matchedIndexes);
-}
-
 // purposely avoided using the `regexp.exec` method to extract start, end indexes
-function getMatchedIndexes(path = '', pattern = ''): [] | MatchedIndex[] {
-  const regexp = new RegExp(pattern, 'ig');
-  const matches = path.match(regexp) || [];
+export function getMatchedIndexes(label = '', input = ''): [] | MatchedIndex[] {
+  const regexp = new RegExp(input, 'ig');
+  const matches = label.match(regexp) || [];
 
   if (matches.length === 0) return [];
 
@@ -81,7 +67,7 @@ function getMatchedIndexes(path = '', pattern = ''): [] | MatchedIndex[] {
   let position: undefined | number;
 
   matches.forEach(match => {
-    startIndex = path.indexOf(match, position === undefined ? 0 : position);
+    startIndex = label.indexOf(match, position === undefined ? 0 : position);
 
     indexes.push([startIndex, startIndex + match.length]);
 
@@ -92,28 +78,27 @@ function getMatchedIndexes(path = '', pattern = ''): [] | MatchedIndex[] {
   return indexes;
 }
 
-function dimUnmatchedStrings(path = '', matchedIndexes: [] | MatchedIndex[]): string {
-  if (matchedIndexes.length === 0) return path;
+export function dimUnmatchedStrings(label = '', matchedIndexes: [] | MatchedIndex[]): string {
+  if (matchedIndexes.length === 0) return label;
 
   const matches = [];
   let previousEnd = 0;
 
-  // @ts-ignore
-  matchedIndexes.forEach(([start, end]) => {
+  (matchedIndexes as MatchedIndex[]).forEach(([start, end]) => {
     if (start !== previousEnd) {
       // unmatched string
-      matches.push(dim(path.slice(previousEnd, start)));
+      matches.push(dim(label.slice(previousEnd, start)));
     }
 
     // matched string
-    matches.push(path.slice(start, end));
+    matches.push(label.slice(start, end));
     previousEnd = end;
   });
 
   // remaining unmatched strings
   const [, end] = matchedIndexes[matchedIndexes.length - 1];
-  if (end < path.length) {
-    matches.push(dim(path.slice(end)));
+  if (end < label.length) {
+    matches.push(dim(label.slice(end)));
   }
 
   return matches.join('');

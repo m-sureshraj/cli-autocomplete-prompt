@@ -1,12 +1,24 @@
-const EventEmitter = require('events');
-const readline = require('readline');
+import EventEmitter from 'events';
+import readline from 'readline';
 
-const { cursorShow, beep } = require('ansi-escapes');
+import { cursorShow, beep } from 'ansi-escapes';
 
-const { getAction, Action } = require('./util');
+import { getAction, Action, Key } from'./util';
 
-class Prompt extends EventEmitter {
-  constructor(options) {
+type Stdin = typeof process.stdin;
+type Stdout = typeof process.stdout;
+
+interface PromptOptions {
+  stdin?: Stdin;
+  stdout?: Stdout;
+}
+
+export class Prompt extends EventEmitter {
+  in: Stdin;
+  out: Stdout;
+  cleanup: () => void;
+
+  constructor(options: PromptOptions = {}) {
     super();
 
     this.in = options.stdin || process.stdin;
@@ -17,10 +29,10 @@ class Prompt extends EventEmitter {
     });
     readline.emitKeypressEvents(this.in, rl);
 
-    if (this.in.isTTY) this.in.setRawMode(true);
+    if (this.in.isTTY) this.in.setRawMode?.(true);
     this.in.write(cursorShow);
 
-    const keypress = (str, key) => {
+    const keypress = (str: string, key: Key) => {
       let action = getAction(key);
 
       if (!action) {
@@ -29,23 +41,31 @@ class Prompt extends EventEmitter {
       }
 
       if (action === Action.keypress) {
-        this.onKeypress(str);
+        this.keypress(str);
       } else if (typeof this[action] === 'function') {
         // specific actions (submit, abort, ...)
-        this[action](key);
+        this[action]();
       }
     };
 
     this.cleanup = () => {
       this.in.removeListener('keypress', keypress);
-      this.in.setRawMode(false);
+      this.in.setRawMode?.(false);
       rl.close();
     };
 
     this.in.on('keypress', keypress);
   }
 
-  onKeypress(_str) {}
+  keypress(str: string) {}
+
+  delete() {}
+
+  down() {}
+
+  up() {}
+
+  submit() {}
 
   abort() {
     this.cleanup();
@@ -56,5 +76,3 @@ class Prompt extends EventEmitter {
     this.out.write(beep);
   }
 }
-
-module.exports = Prompt;

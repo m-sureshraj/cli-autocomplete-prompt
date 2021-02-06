@@ -1,6 +1,6 @@
 import { dim } from 'kleur';
 
-export const enum Action {
+export enum Action {
   abort = 'abort',
   delete = 'delete',
   up = 'up',
@@ -9,10 +9,10 @@ export const enum Action {
   keypress = 'keypress',
 }
 
-interface Key {
-  name: string;
+export interface Key {
   ctrl: boolean;
   meta: boolean;
+  name: string;
 }
 
 type MatchedIndex = [number, number];

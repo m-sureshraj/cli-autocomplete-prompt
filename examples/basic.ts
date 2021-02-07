@@ -6,12 +6,17 @@ const list = [
     { value: 300, label: '300' },
 ];
 
+interface ListItem {
+    value: number;
+    label: string;
+}
+
 autoComplete({
     list,
     onSubmit: ({ value }: { value: string }) => value,
-}).then(results => {
+}).then((results: ListItem[]) => {
     console.log(results);
-}).catch(error => {
+}).catch((error: Error) => {
     console.error(error);
 });
 

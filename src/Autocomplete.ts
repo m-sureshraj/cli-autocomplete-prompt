@@ -1,34 +1,60 @@
-const {
+import {
   eraseLine,
   cursorLeft,
   cursorUp,
   cursorForward,
   eraseLines,
   cursorDown
-} = require('ansi-escapes');
-const stripAnsi = require('strip-ansi');
-const { bgYellow, dim } = require('kleur');
+} from 'ansi-escapes';
+import { bgYellow, dim } from 'kleur';
+import stripAnsi from 'strip-ansi';
 
-const Prompt = require('./Prompt');
-const { getScrollPosition, getMatchedIndexes, dimUnmatchedStrings } = require('./util');
+import { Prompt } from './Prompt';
+import { getScrollPosition, getMatchedIndexes, dimUnmatchedStrings } from './util';
 
-const identity = item => item;
+const identity = <T>(item: T) => item;
 
-class Autocomplete extends Prompt {
-  constructor(options = {}) {
-    super(options);
+interface ListItem {
+  label: string;
+  value: unknown;
+}
 
-    // options
+export interface AutocompleteOptions {
+  list?: ListItem[];
+  limit?: number;
+  onSubmit?: (matches: ListItem[]) => unknown;
+  promptLabel?: string;
+}
+
+export class Autocomplete extends Prompt {
+  input: string;
+  firstRender: boolean;
+  cursor: number;
+  focusedItemIndex: number | null;
+  filteredList: ListItem[];
+  outputText: string;
+
+  // options
+  list: ListItem[];
+  limit: number;
+  promptLabel: string;
+  onSubmit?: AutocompleteOptions['onSubmit'];
+
+  constructor(options: AutocompleteOptions = {}) {
+    super();
+
+    // init options
     this.list = options.list || [];
     this.limit = options.limit || 10;
-    this.onSubmit = typeof options.onSubmit === 'function' ? options.onSubmit : identity;
     this.promptLabel = options.promptLabel || 'filter › ';
+    this.onSubmit = options.onSubmit;
 
     this.input = '';
     this.firstRender = true;
     this.cursor = 0;
     this.focusedItemIndex = null;
     this.filteredList = [];
+    this.outputText = '';
 
     // to pass following methods as a callback
     this.suggestion = this.suggestion.bind(this);
@@ -37,7 +63,7 @@ class Autocomplete extends Prompt {
     this.render();
   }
 
-  onKeypress(str) {
+  keypress(str?: string) {
     if (typeof str === 'undefined') return;
 
     this.input += str;
@@ -90,7 +116,7 @@ class Autocomplete extends Prompt {
 
   submit() {
     const matches = Number.isInteger(this.focusedItemIndex)
-      ? [this.filteredList[this.focusedItemIndex]]
+      ? [this.filteredList[this.focusedItemIndex as number]]
       : this.filteredList;
 
     if (!matches.length) {
@@ -98,7 +124,8 @@ class Autocomplete extends Prompt {
       return;
     }
 
-    this.emit('submit', this.onSubmit(matches));
+    this.emit('submit', typeof this.onSubmit === 'function' ? this.onSubmit(matches) : matches);
+
     this.cleanup();
   }
 
@@ -124,18 +151,18 @@ class Autocomplete extends Prompt {
     return dimUnmatchedStrings(label, matchedIndexes);
   }
 
-  renderOption({ label }, isFocused, isStart, isEnd) {
+  renderOption({ label }: ListItem, isFocused: boolean, isStart: boolean, isEnd: boolean) {
     const scrollIndicator = isStart ? '↑ ' : isEnd ? '↓ ' : '';
     const content = isFocused ? bgYellow().black(label) : this.highlight(this.input, label);
 
     return `${scrollIndicator}${content}`;
   }
 
-  suggestion(item) {
+  suggestion(item: ListItem) {
     return item.label.includes(this.input);
   }
 
-  formatBody(body) {
+  formatBody(body: string) {
     return `\n${body || 'No matches found'}`;
   }
 
@@ -158,7 +185,7 @@ class Autocomplete extends Prompt {
 
     const suggestions = this.filteredList
       .slice(startIndex, endIndex)
-      .map((item, index) => {
+      .map((item, index: number) => {
         return this.renderOption(
           item,
           this.focusedItemIndex === index + startIndex,
@@ -185,5 +212,3 @@ class Autocomplete extends Prompt {
     this.firstRender = false;
   }
 }
-
-module.exports = Autocomplete;

@@ -1,10 +1,10 @@
-import { Autocomplete, AutocompleteOptions } from "./Autocomplete";
+import { Autocomplete, AutocompleteOptions } from './Autocomplete';
 
-function autoComplete(options: AutocompleteOptions) {
-  return new Promise((resolve) => {
+function autoComplete(options: AutocompleteOptions): Promise<void> {
+  return new Promise(resolve => {
     const autocomplete = new Autocomplete(options);
 
-    autocomplete.on("submit", (matches) => {
+    autocomplete.on('submit', matches => {
       resolve(matches);
     });
   });

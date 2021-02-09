@@ -78,7 +78,10 @@ export function getMatchedIndexes(label = '', input = ''): [] | MatchedIndex[] {
   return indexes;
 }
 
-export function dimUnmatchedStrings(label = '', matchedIndexes: [] | MatchedIndex[]): string {
+export function dimUnmatchedStrings(
+  label = '',
+  matchedIndexes: [] | MatchedIndex[]
+): string {
   if (matchedIndexes.length === 0) return label;
 
   const matches = [];

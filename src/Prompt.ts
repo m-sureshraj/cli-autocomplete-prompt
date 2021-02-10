@@ -3,7 +3,7 @@ import readline from 'readline';
 
 import { cursorShow, beep } from 'ansi-escapes';
 
-import { getAction, Action, Key } from'./util';
+import { getAction, Action, Key } from './util';
 
 type Stdin = typeof process.stdin;
 type Stdout = typeof process.stdout;
@@ -33,7 +33,7 @@ export class Prompt extends EventEmitter {
     this.in.write(cursorShow);
 
     const keypress = (str: string, key: Key) => {
-      let action = getAction(key);
+      const action = getAction(key);
 
       if (!action) {
         this.bell();
@@ -57,22 +57,22 @@ export class Prompt extends EventEmitter {
     this.in.on('keypress', keypress);
   }
 
-  keypress(str: string) {}
+  keypress(_str: string): void {}
 
-  delete() {}
+  delete(): void {}
 
-  down() {}
+  down(): void {}
 
-  up() {}
+  up(): void {}
 
-  submit() {}
+  submit(): void {}
 
-  abort() {
+  abort(): void {
     this.cleanup();
     this.out.write('\n');
   }
 
-  bell() {
+  bell(): void {
     this.out.write(beep);
   }
 }

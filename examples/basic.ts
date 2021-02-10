@@ -1,24 +1,21 @@
-const { autoComplete } = require('../src/index');
+import { autoComplete } from '../src';
 
 const list = [
-    { value: 100, label: '100' },
-    { value: 200, label: '200' },
-    { value: 300, label: '300' },
+  { value: 100, label: '100' },
+  { value: 200, label: '200' },
+  { value: 300, label: '300' },
 ];
 
-interface ListItem {
-    value: number;
-    label: string;
-}
-
 autoComplete({
-    list,
-    onSubmit: ({ value }: { value: string }) => value,
-}).then((results: ListItem[]) => {
+  list,
+  onSubmit: matches => matches.map(match => match.label),
+})
+  .then(results => {
     console.log(results);
-}).catch((error: Error) => {
+  })
+  .catch((error: Error) => {
     console.error(error);
-});
+  });
 
 // this.message = dim(' filter ›');
 
@@ -33,9 +30,9 @@ autoComplete({
 // formatBody(body) {
 //     return `\n${body || 'No matches found'}`;
 
-    // if (this.filteredList.length && this.filteredList.length > this.limit) {
-    //   this.outputText += `\n\n ${gray(`Matched ${this.filteredList.length} files`)}`;
-    // }
+// if (this.filteredList.length && this.filteredList.length > this.limit) {
+//   this.outputText += `\n\n ${gray(`Matched ${this.filteredList.length} files`)}`;
+// }
 // }
 
 // suggestion(item) {

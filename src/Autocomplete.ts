@@ -4,7 +4,7 @@ import {
   cursorUp,
   cursorForward,
   eraseLines,
-  cursorDown
+  cursorDown,
 } from 'ansi-escapes';
 import { bgYellow, dim } from 'kleur';
 import stripAnsi from 'strip-ansi';
@@ -63,7 +63,7 @@ export class Autocomplete extends Prompt {
     this.render();
   }
 
-  keypress(str?: string) {
+  keypress(str?: string): void {
     if (typeof str === 'undefined') return;
 
     this.input += str;
@@ -73,7 +73,7 @@ export class Autocomplete extends Prompt {
     this.render();
   }
 
-  delete() {
+  delete(): void {
     // To prevent deleting the prompt message.
     if (this.cursor === 0) return this.bell();
 
@@ -84,7 +84,7 @@ export class Autocomplete extends Prompt {
     this.render();
   }
 
-  down() {
+  down(): void {
     // do nothing when the filtered list is empty
     if (!this.filteredList.length) return;
 
@@ -100,7 +100,7 @@ export class Autocomplete extends Prompt {
     this.render();
   }
 
-  up() {
+  up(): void {
     // do nothing when there is no focused item, or when the filtered list is empty
     if (this.focusedItemIndex === null || this.filteredList.length === 0) return;
 
@@ -114,7 +114,7 @@ export class Autocomplete extends Prompt {
     this.render();
   }
 
-  submit() {
+  submit(): void {
     const matches = Number.isInteger(this.focusedItemIndex)
       ? [this.filteredList[this.focusedItemIndex as number]]
       : this.filteredList;
@@ -124,16 +124,19 @@ export class Autocomplete extends Prompt {
       return;
     }
 
-    this.emit('submit', typeof this.onSubmit === 'function' ? this.onSubmit(matches) : matches);
+    this.emit(
+      'submit',
+      typeof this.onSubmit === 'function' ? this.onSubmit(matches) : matches
+    );
 
     this.cleanup();
   }
 
-  resetFocusedItem() {
+  resetFocusedItem(): void {
     this.focusedItemIndex = null;
   }
 
-  updateFilterList() {
+  updateFilterList(): void {
     if (this.input === '') {
       this.filteredList = this.list.map(identity);
     } else {
@@ -141,7 +144,7 @@ export class Autocomplete extends Prompt {
     }
   }
 
-  highlight(input = '', label = '') {
+  highlight(input = '', label = ''): string {
     input = input.trim();
     if (input.length === 0) return dim(label);
 
@@ -151,22 +154,29 @@ export class Autocomplete extends Prompt {
     return dimUnmatchedStrings(label, matchedIndexes);
   }
 
-  renderOption({ label }: ListItem, isFocused: boolean, isStart: boolean, isEnd: boolean) {
+  renderOption(
+    { label }: ListItem,
+    isFocused: boolean,
+    isStart: boolean,
+    isEnd: boolean
+  ): string {
     const scrollIndicator = isStart ? '↑ ' : isEnd ? '↓ ' : '';
-    const content = isFocused ? bgYellow().black(label) : this.highlight(this.input, label);
+    const content = isFocused
+      ? bgYellow().black(label)
+      : this.highlight(this.input, label);
 
     return `${scrollIndicator}${content}`;
   }
 
-  suggestion(item: ListItem) {
+  suggestion(item: ListItem): boolean {
     return item.label.includes(this.input);
   }
 
-  formatBody(body: string) {
+  formatBody(body: string): string {
     return `\n${body || 'No matches found'}`;
   }
 
-  render() {
+  render(): void {
     if (!this.firstRender) {
       // clear the previous output
       const rows = this.outputText.split('\n').length;

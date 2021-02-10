@@ -1,4 +1,4 @@
-import { Autocomplete, AutocompleteOptions } from './Autocomplete';
+import { Autocomplete, AutocompleteOptions, ListItem } from './Autocomplete';
 
 function autoComplete(options: AutocompleteOptions): Promise<void> {
   return new Promise(resolve => {
@@ -10,4 +10,5 @@ function autoComplete(options: AutocompleteOptions): Promise<void> {
   });
 }
 
-export { Autocomplete, AutocompleteOptions, autoComplete };
+export { Autocomplete, AutocompleteOptions, autoComplete, ListItem };
+export { dimUnmatchedStrings, getMatchedIndexes } from './util';

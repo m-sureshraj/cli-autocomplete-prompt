@@ -14,7 +14,7 @@ import { getScrollPosition, getMatchedIndexes, dimUnmatchedStrings } from './uti
 
 const identity = <T>(item: T) => item;
 
-interface ListItem {
+export interface ListItem {
   label: string;
   value: unknown;
 }
@@ -172,8 +172,8 @@ export class Autocomplete extends Prompt {
     return item.label.includes(this.input);
   }
 
-  formatBody(body: string): string {
-    return `\n${body || 'No matches found'}`;
+  formatBody(suggestions: string): string {
+    return `\n${suggestions || 'No matches found'}`;
   }
 
   render(): void {

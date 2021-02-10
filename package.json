@@ -13,7 +13,7 @@
     "prebuild": "rimraf build",
     "type-check": "tsc --noEmit",
     "build": "tsc",
-    "start": "ts-node ./examples/basic.ts",
+    "start": "npm run default-autocomplete --prefix examples",
     "test": "",
     "lint-all": "eslint '**/*.{js,ts}'",
     "lint-fix": "eslint --fix"

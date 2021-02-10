@@ -1,7 +1,7 @@
 {
-  "name": "cli-select-prompt",
+  "name": "cli-autocomplete-prompt",
   "version": "0.0.1",
-  "description": "A primitive select prompt for CLI with autocomplete feature",
+  "description": "Fully customizable autocomplete prompt for CLIs",
   "main": "build/index.js",
   "files": [
     "build"
@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/m-sureshraj/cli-select-prompt.git"
+    "url": "git+https://github.com/m-sureshraj/cli-autocomplete-prompt.git"
   },
   "keywords": [
     "cli",
@@ -41,9 +41,9 @@
   "author": "Sureshraj <m.s.suresh100@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/m-sureshraj/cli-select-prompt/issues"
+    "url": "https://github.com/m-sureshraj/cli-autocomplete-prompt/issues"
   },
-  "homepage": "https://github.com/m-sureshraj/cli-select-prompt#readme",
+  "homepage": "https://github.com/m-sureshraj/cli-autocomplete-prompt#readme",
   "dependencies": {
     "ansi-escapes": "^4.3.1",
     "kleur": "^4.1.3",

@@ -129,6 +129,10 @@ export class Autocomplete extends Prompt {
       typeof this.onSubmit === 'function' ? this.onSubmit(matches) : matches
     );
 
+    // clear the body
+    const rows = this.outputText.split('\n').length;
+    this.out.write(cursorDown(rows) + eraseLines(rows));
+
     this.cleanup();
   }
 

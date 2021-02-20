@@ -2,8 +2,8 @@
   "name": "examples",
   "version": "1.0.0",
   "scripts": {
-    "default-autocomplete": "../node_modules/.bin/ts-node ./defaultAutocomplete.ts",
-    "jest-style-autocomplete": "../node_modules/.bin/ts-node ./jest-style-autocomplete"
+    "default-autocomplete": "ts-node ./default-autocomplete",
+    "jest-style-autocomplete": "ts-node ./jest-style-autocomplete"
   },
   "license": "ISC",
   "dependencies": {
@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@types/is-glob": "^4.0.1",
-    "@types/micromatch": "^4.0.1"
+    "@types/micromatch": "^4.0.1",
+    "ts-node": "^9.1.1"
   }
 }

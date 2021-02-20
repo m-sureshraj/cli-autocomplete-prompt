@@ -46,7 +46,7 @@ export class Autocomplete extends Prompt {
     // init options
     this.list = options.list || [];
     this.limit = options.limit || 10;
-    this.promptLabel = options.promptLabel || 'filter › ';
+    this.promptLabel = options.promptLabel || '';
     this.onSubmit = options.onSubmit;
 
     this.input = '';

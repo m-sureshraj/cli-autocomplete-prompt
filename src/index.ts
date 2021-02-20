@@ -1,6 +1,6 @@
 import { Autocomplete, AutocompleteOptions, ListItem } from './Autocomplete';
 
-function autoComplete(options: AutocompleteOptions): Promise<void> {
+function autoComplete(options?: AutocompleteOptions): Promise<void> {
   return new Promise(resolve => {
     const autocomplete = new Autocomplete(options);
 

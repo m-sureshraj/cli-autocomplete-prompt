@@ -8,9 +8,9 @@ In one of my [projects](https://github.com/m-sureshraj/mocha-watch-typeahead), I
 style autocomplete prompt. My initial attempt was to find a library
 to implement it. So my search began, and I found several nice CLI
 prompt libraries. Most of them offered UI, behavior customization to
-some extent. But those customizations were not enough to build
-the needed prompt. Therefore, I created this primitive autocomplete
-prompt that provides full control over its UI.
+some extent. However, those customizations were not enough to build
+the needed prompt. Therefore, I created this autocomplete prompt that
+extendable to control its UI and behaviors.
 
 ## Install
 ```
@@ -70,7 +70,9 @@ matched items when the prompt is submitted.
 | onSubmit | `function` | `undefined` | A hook to transform the matched items before they get submitted. It receives the matched items (`array`) as an argument. |
 
 ## Customization
-coming soon.
+In addition to the factory function, the package exports a `class` and
+a couple of utility functions to customize the prompt's default UI and behaviors.
+View [CUSTOMIZATION.md](./CUSTOMIZATION.md) to learn more about the customization.
 
 ## Credits
 [Prompts](https://github.com/terkelg/prompts) - is a lightweight library to create beautiful and user-friendly interactive prompts.

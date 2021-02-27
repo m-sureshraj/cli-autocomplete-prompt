@@ -1,22 +1,15 @@
+import { basename } from 'path';
+
 import { dim } from 'kleur';
 
 import { JestStyleAutocomplete } from './JestStyleAutocomplete';
 import { ListItem, AutocompleteOptions } from '../../src';
-
-const list = [
-  { label: 'lib/cli/index.js', value: 'lib/cli/index.js' },
-  { label: 'lib/cli/print.js', value: 'lib/cli/print.js' },
-  { label: 'lib/mocha/run.js', value: 'lib/mocha/run.js' },
-  { label: '.eslintrc.js', value: { name: '.eslintrc.js', isDotFile: true } },
-  { label: 'foo.js', value: undefined },
-  { label: 'bar.js', value: 100 },
-  { label: 'baz.txt', value: ['no idea'] },
-  { label: 'cool.ts', value: null },
-];
+import { data } from './data';
 
 const options = {
-  list,
-  onSubmit: (matches: ListItem[]) => matches.map(match => match.value),
+  list: data.map((value: string) => ({ label: value, value })),
+  onSubmit: (matches: ListItem[]) =>
+    matches.map(match => basename(match.value as string)),
   promptLabel: dim(' filter › '),
 };
 
@@ -32,10 +25,7 @@ function jestStyleAutocomplete(options: AutocompleteOptions): Promise<void> {
   });
 }
 
-jestStyleAutocomplete(options)
-  .then(results => {
-    console.log(results);
-  })
-  .catch((error: Error) => {
-    console.error(error);
-  });
+(async () => {
+  const results = await jestStyleAutocomplete(options);
+  console.log(results);
+})();

@@ -53,7 +53,7 @@ export class JestStyleAutocomplete extends Autocomplete {
     if (this.filteredList.length > this.limit) {
       const matchCountText = `\n\n ${gray(`Matched ${this.filteredList.length} files`)}`;
 
-      return [suggestions, matchCountText].join('');
+      return ['\n\n', suggestions, matchCountText].join('');
     }
 
     return `\n\n${suggestions || ' No matches found'}`;

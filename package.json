@@ -1,6 +1,6 @@
 {
   "name": "cli-autocomplete-prompt",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A primitive autocomplete prompt that provides full control over its UI and behaviors",
   "main": "build/index.js",
   "files": [

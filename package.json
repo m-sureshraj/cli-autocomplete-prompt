@@ -1,7 +1,7 @@
 {
   "name": "cli-autocomplete-prompt",
   "version": "0.0.1",
-  "description": "A primitive autocomplete prompt that provides full control over its UI",
+  "description": "A primitive autocomplete prompt that provides full control over its UI and behaviors",
   "main": "build/index.js",
   "files": [
     "build"
@@ -13,8 +13,11 @@
     "prebuild": "rimraf build",
     "type-check": "tsc --noEmit",
     "build": "tsc",
+    "preversion": "npm test",
+    "version": "npm run build",
+    "postversion": "git push && git push --tags && npm publish",
     "start": "npm run default-autocomplete --prefix examples",
-    "test": "",
+    "test": "echo 'TBD'",
     "lint-all": "eslint '**/*.{js,ts}'",
     "lint-fix": "eslint --fix"
   },

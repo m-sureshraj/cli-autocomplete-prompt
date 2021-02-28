@@ -1,5 +1,7 @@
 # cli-autocomplete-prompt
-A primitive autocomplete prompt that provides full control over its UI.
+![npm](https://img.shields.io/npm/v/cli-autocomplete-prompt?color=blue)
+
+A primitive autocomplete prompt that provides full control over its UI and behaviors.
 
 ![jest style autocomplete prompt in action](./media/jest-style-autocomplete.gif)
 
@@ -16,7 +18,6 @@ extendable to control its UI and behaviors.
 ```
 npm install --save cli-autocomplete-prompt
 ```
-> This package supports Node.js version 8.6 and above
 
 ## Usage
 The autocomplete prompt can be created using the `autoComplete`
@@ -62,8 +63,8 @@ It takes an [options](#options) (optional) object and returns the
 matched items when the prompt is submitted.
 
 ### Options
-| Property | Type | Default | Description |
-| --- | --- | --- | --- |
+| Property&nbsp;&nbsp;&nbsp;&nbsp; | Type&nbsp;&nbsp;&nbsp;&nbsp; | Default&nbsp;&nbsp;&nbsp;&nbsp; | Description |
+| :--- | :--- | :--- | :--- |
 | promptLabel | `string` | `''` | Prompt label to display |
 | limit | `number` | 10 | Max number of results to show |
 | list | `array` | `[]` | An array of list items. A list item should be an object with the `label`, `value` property. The label should be a type `string`, and the value can be anything. |
@@ -73,6 +74,11 @@ matched items when the prompt is submitted.
 In addition to the factory function, the package exports a `class` and
 a couple of utility functions to customize the prompt's default UI and behaviors.
 View [CUSTOMIZATION.md](./CUSTOMIZATION.md) to learn more about the customization.
+
+## Todo
+- [ ] Support wordwrap
+- [ ] Tests
+- [ ] CI Setup
 
 ## Credits
 [Prompts](https://github.com/terkelg/prompts) - is a lightweight library to create beautiful and user-friendly interactive prompts.

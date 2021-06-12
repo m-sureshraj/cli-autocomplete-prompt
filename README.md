@@ -46,10 +46,10 @@ get the matched item[s].
 
 ![autocomplete prompt in action](./media/autocomplete.gif)
 
-The autocomplete prompt's default behaviors:
+Default behaviors:
 
 * If the input is empty, it matches all items when the prompt is submitted.
-* The suggestion logic uses the `String.includes` method on items'
+* The suggestion logic uses the [`String.includes`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes) method on items'
   label property to update the list while the user types.
 * It prevents prompt submission when there is no match found.
 

@@ -6,13 +6,11 @@ A primitive autocomplete prompt that provides full control over its UI and behav
 ![jest style autocomplete prompt in action](./media/jest-style-autocomplete.gif)
 
 ## Motivation
-In one of my [projects](https://github.com/m-sureshraj/mocha-watch-typeahead), I was trying to create a [jest-watch-typeahead](https://github.com/jest-community/jest-watch-typeahead#jest-watch-typeahead)
-style autocomplete prompt. My initial attempt was to find a library
-to implement it. So my search began, and I found several nice CLI
-prompt libraries. Most of them offered UI, behavior customization to
-some extent. However, those customizations were not enough to build
-the needed prompt. Therefore, I created this autocomplete prompt that
-extendable to control its UI and behaviors.
+In one of my [projects](https://github.com/m-sureshraj/mocha-watch-typeahead), I was trying to create the [jest-watch-typeahead](https://github.com/jest-community/jest-watch-typeahead#jest-watch-typeahead)
+style autocomplete prompt. My initial attempt was to find a library to implement it. 
+I found several good CLI prompt libraries, and most of them offered UI, behavior customization to some extent. 
+However, those customizations were not enough to build the needed prompt. 
+Therefore, I created this autocomplete prompt that extendable to control its UI and behaviors.
 
 ## Install
 ```

@@ -12,8 +12,6 @@ import stripAnsi from 'strip-ansi';
 import { Prompt } from './Prompt';
 import { getScrollPosition, getMatchedIndexes, dimUnmatchedStrings } from './util';
 
-const identity = <T>(item: T) => item;
-
 export interface ListItem {
   label: string;
   value: unknown;
@@ -142,7 +140,7 @@ export class Autocomplete extends Prompt {
 
   updateFilterList(): void {
     if (this.input === '') {
-      this.filteredList = this.list.map(identity);
+      this.filteredList = this.list.map(item => item);
     } else {
       this.filteredList = this.list.filter(this.suggestion);
     }
